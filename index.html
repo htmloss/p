@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share</title>
+  <style>
+    .share-title {
+      margin-top: 300px;
+      font-size: 60px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2 class="share-title">loading...</h2>
+  <script>
+    const query = location.href.split('?')[1]
+
+    if (query) {
+      const queryObj = {}
+      let url = ''
+      
+      query.split('&').forEach(item => {
+        const [ name, value ] = item.split('=')
+
+        queryObj[name] = value
+      });
+
+      if (queryObj.token) {
+        url = atob(queryObj.token)
+      }
+
+      if (queryObj.url) {
+        url = queryObj.url
+      }
+
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          document.write(html)
+        })
+    }
+  </script>
+</body>
+</html>
