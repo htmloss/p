@@ -3,19 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Share</title>
+  <title>loading...</title>
   <style>
-    .share-title {
-      margin-top: 300px;
-      font-size: 60px;
-      text-align: center;
+    .loading {
+      position: absolute;
+      top: 30%;
+      left: calc(50% - 1.25em);
+      width: 2.5em;
+      height: 2.5em;
+      transform: rotate(165deg);
+    }
+
+    .loading:before, .loading:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 0.25em;
+      transform: translate(-50%, -50%);
+    }
+
+    .loading:before {
+      animation: loading-before 1.5s infinite;
+    }
+
+    .loading:after {
+      animation: loading-after 1.5s infinite;
+    }
+
+    @keyframes loading-before {
+      0% {
+        width: 0.5em;
+        box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+      }
+      35% {
+        width: 2.5em;
+        box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
+      }
+      70% {
+        width: 0.5em;
+        box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
+      }
+      100% {
+        box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+      }
+    }
+
+    @keyframes loading-after {
+      0% {
+        height: 0.5em;
+        box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+      }
+      35% {
+        height: 2.5em;
+        box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
+      }
+      70% {
+        height: 0.5em;
+        box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
+      }
+      100% {
+        box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+      }
     }
   </style>
 </head>
 <body>
-  <h2 class="share-title">loading...</h2>
   <script>
     const query = location.href.split('?')[1]
+    let loading = true
+
+    setTimeout(() => {
+      if (loading) {
+        const div = document.createElement('div')
+        div.className = 'loading'
+        document.body.appendChild(div)
+      }
+    }, 300)
 
     if (query) {
       const queryObj = {}
@@ -38,6 +105,7 @@
       fetch(url)
         .then(res => res.text())
         .then(html => {
+          loading = false
           document.write(html)
         })
     }
